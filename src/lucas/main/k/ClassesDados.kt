@@ -2,7 +2,11 @@ package lucas.main.k
 
 data class PLL(val nome: String, val seq: String, val isParidade: Boolean)
 
-data class PBL(val nome: String, val topo: PLL, val base: PLL)
+data class PBL(val nome: String, val topo: PLL, val base: PLL){
+    fun asSetup(): String {
+        return sequenciaOtimizada(topo.seq.sequenciaReversa() + base.seq.sequenciaReversa().sequenciaEmBaixo())
+    }
+}
 
 data class AuxAlg(val nome: String, val seq: String)
 

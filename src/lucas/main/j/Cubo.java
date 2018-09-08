@@ -179,6 +179,15 @@ public class Cubo implements Comparable<Cubo> {
                 && pieceAt(17) != pieceAt(18);
     }
 
+    public ArrayList<Byte> getPieces(boolean face){
+        ArrayList<Byte> r = new ArrayList<>();
+        for (int i = 0; i < 12; i++) {
+            r.add(pieceAt(i + (face ? 0 : 12)));
+        }
+
+        return r;
+    }
+
     /**
      * Returns a "binary" representation to this cube.
      * Each edge is a 0 and each corner is a 1.
