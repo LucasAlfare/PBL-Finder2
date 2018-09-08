@@ -2,6 +2,7 @@ package lucas.main.k
 
 import lucas.main.j.Cubo
 import java.util.*
+import lucas.main.j.CustomStringUtils.*
 
 class Buscador(val pbl: PBL) {
 
@@ -10,22 +11,33 @@ class Buscador(val pbl: PBL) {
 
     fun procurar() {
         val square = Cubo()
-        square.aplicarSequencia(pbl.asSetup())
-        log = "Targeted PBL: ${pbl.nome}\n"
-        log += "Setup to targeted PBL: ${pbl.asSetup()}"
 
-        for (auxAlg1 in SequenciasTemplates.AUX_ALGS){
-            for (auxAlg2 in SequenciasTemplates.AUX_ALGS) {
-                val sequenciaDeTeste = auxAlg1.seq + auxAlg2.seq
+        log = "Targeted PBL: ${pbl.nome}\n"
+
+        val s1 = otimizedSequence(reversedSequence(pbl.topo.seq))
+        val s2 = otimizedSequence(reversedSequence(pbl.base.seq.sequenciaEmBaixo()))
+
+        square.aplicarSequencia(s1)
+        square.aplicarSequencia(s2)
+
+        log += "Setup to targeted PBL: ($s1) and ($s2)"
+        println(log)
+
+        for (a in SequenciasTemplates.AUX_ALGS){
+            for (b in SequenciasTemplates.AUX_ALGS) {
+                val sequenciaDeTeste = a.seq + b.seq
                 square.aplicarSequencia(sequenciaDeTeste)
 
                 if (isResolvido(square)){
-                    buscas.add(Resultado(pbl, sequenciaOtimizada(sequenciaDeTeste), arrayListOf(auxAlg1, auxAlg2)))
+                    buscas.add(Resultado(pbl, otimizedSequence(sequenciaDeTeste), arrayListOf(a, b)))
+                    square.aplicarSequencia(reversedSequence(sequenciaDeTeste))
+                } else {
+                    square.aplicarSequencia(reversedSequence(sequenciaDeTeste))
                 }
-
-                square.aplicarSequencia(sequenciaDeTeste.sequenciaReversa())
             }
         }
+
+        println(buscas)
     }
 
     fun isResolvido(teste: Cubo): Boolean {

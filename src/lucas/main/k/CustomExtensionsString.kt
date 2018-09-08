@@ -4,12 +4,9 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 fun String.sequenciaEmBaixo(): String {
-    this.replace(")", "")
-    this.replace("(", "")
-    this.replace(" ", "")
-    return (if (this[0] == '/') "/6,6/-1,1" else "/6,6/-1,1/0,0/") +
-            this +
-            (if (this[length - 1] != '/') "/6,6/-1,1" else "1,-1/6,6/")
+    val prefix = if (startsWith("/")) "/6,6/-1,1" else "/6,6/-1,1/0,0/"
+    val sufix = if (!endsWith("/")) "/6,6/-1,1" else "1,-1/6,6/"
+    return prefix + this + sufix
 }
 
 fun String.sequenciaReversa(): String {
@@ -22,20 +19,20 @@ fun String.sequenciaReversa(): String {
     for (s in this.split("/").reversed()){
         val ss = s.split(",")
         if (s != ""){
-            holder.add((ss[0].toInt() * -1).toString() + "," + (ss[1].toInt() * -1))
+            holder.add(((ss[0].replace(" ", "").toInt() * -1).toString() + "," + (ss[1].replace(" ", "").toInt() * -1)))
         }
     }
 
     var r = holder.toString().replace(", ", "/").replace("[", "").replace("]", "").replace(" ", "")
-    if (this[0] == '/') r += "/"
-    if (this[length - 1] == '/') "/" + r
+    if (startsWith("/")) r += "/"
+    if (endsWith("/")) r = "/" + r
 
     return r
 }
 
 fun sequenciaOtimizada(old: String): String {
     val aux = arrayListOf<String>()
-    aux.addAll(old.replace(" ", "").split("/"))
+    aux.addAll(old.replace(" ", "").replace("[", "").replace("]", "").split("/"))
     //remove os itens vazios..
     aux.removeAll(Collections.singletonList(""))
 
@@ -60,7 +57,7 @@ fun sequenciaOtimizada(old: String): String {
 
             //a+c,b+d
             aux.add(indice00 - 1, x.toString() + "," + y)
-            return sequenciaOtimizada(strListToSequence(aux, old))
+            return sequenciaOtimizada(strListToSequence(aux, old)).replace("[", "").replace("]", "")
         } else if (indice00 == 0) { //no começo..
             aux.removeAt(0)
             return sequenciaOtimizada(strListToSequence(aux, old.replaceFirst("/".toRegex(), "")))
@@ -69,14 +66,14 @@ fun sequenciaOtimizada(old: String): String {
             return sequenciaOtimizada(strListToSequence(aux, old))
         }
     } else {
-        return strListToSequence(aux, old)
+        return strListToSequence(aux, old).replace("[", "").replace("]", "")
     }
 }
 
 private fun strListToSequence(lista: ArrayList<String>, original: String): String{
     var r = lista.toString().replace(", ", "/").replace("(", "").replace(")", "").replace(" ", "")
 
-    if (original[0] == '/') r = "/" + r
+    if (original.startsWith("/")) r = "/" + r
     if (original.endsWith("/") || original.endsWith("/0,0")) r += "/"
 
     return r

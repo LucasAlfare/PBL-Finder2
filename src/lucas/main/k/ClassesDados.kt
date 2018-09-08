@@ -13,7 +13,7 @@ data class AuxAlg(val nome: String, val seq: String)
 data class Resultado(val pbl: PBL, val seq: String, val auxAlgs: ArrayList<AuxAlg>){
 
     fun tamanhoTwistMetric(): Int {
-        return seq.split("/".toRegex(), -1).size - 1
+        return seq.count { "/".contains(it) }
     }
 
     fun tamanhoTurnMetric(): Int {
@@ -38,6 +38,6 @@ data class Resultado(val pbl: PBL, val seq: String, val auxAlgs: ArrayList<AuxAl
         }
         s += "]"
 
-        return s.replace("| ]".toRegex(), "]") + "   ~{${tamanhoTwistMetric()}/${tamanhoTurnMetric()}}"
+        return s.replace("| ]", "]") + "   ~{${tamanhoTwistMetric()}/${tamanhoTurnMetric()}}"
     }
 }

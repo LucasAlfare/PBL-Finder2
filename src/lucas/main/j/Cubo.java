@@ -50,17 +50,18 @@ public class Cubo implements Comparable<Cubo> {
     public void aplicarSequencia(String sequencia){
         String[] pares = sequencia.replaceAll(" ", "").replaceAll("\\(", "").replaceAll("\\)", "").split("/");
 
+        if (sequencia.startsWith("/")) twist();
+
         for (String par : pares){
-            if (par.isEmpty()){
-                twist();
-            } else {
+            if (!par.equals("")){
                 String[] movimentosPar = par.split(",");
                 mover(true, Integer.parseInt(movimentosPar[0]));
                 mover(false, Integer.parseInt(movimentosPar[1]));
+                twist();
             }
         }
 
-        if (sequencia.endsWith("/")) twist();
+        if (!sequencia.endsWith("/")) twist();
     }
 
     /**
