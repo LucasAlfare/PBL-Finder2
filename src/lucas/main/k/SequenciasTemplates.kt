@@ -13,7 +13,7 @@ object SequenciasTemplates {
     /**
      * PLLs padrão
      */
-    val PLLs_PADRAO = ArrayList(Arrays.asList(
+    val PLLs_PADRAO = arrayListOf(
             PLL("Ua", "/3,0/1,0/0,-3/-1,0/-3,0/1,0/0,3/-1,0", false),
             PLL("Ub", "1,0/0,-3/-1,0/3,0/1,0/0,3/-1,0/-3,0/", false),
             PLL("Z", "1,0/-1,-1/-2,1/-1,-1/4,1/-1,-1/0,1", false),
