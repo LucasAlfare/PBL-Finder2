@@ -5,7 +5,7 @@ import java.util.ArrayList
 
 
 /**
- * Essa classe guarda algoritmos em forma de String para serem usados nas mais
+ * Esse objeto guarda algoritmos em forma de String para serem usados nas mais
  * diversas operações.
  */
 object SequenciasTemplates {
