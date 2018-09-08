@@ -35,12 +35,11 @@ object SequenciasTemplates {
             PLL("Gc", "1,0/-3,3/3,-3/-4,0/0,3/0,-3/0,3/0,-3/", false),
             PLL("Gd", "/0,3/0,-3/0,3/0,-3/1,0/-3,3/3,-3/-1,0", false),
             PLL("V", "1,0/3,0/-4,-1/0,-3/3,0/1,-2/0,3/0,3/-4,-1/0,1", false))
-    )
 
     /**
      * PLLs de paridade
      */
-    val PLLs_PARIDADE = ArrayList(Arrays.asList(
+    val PLLs_PARIDADE = arrayListOf(
             PLL("Adj", "/-3,0/0,3/0,-3/0,3/2,0/0,2/-2,0/4,0/0,-2/0,2/-1,4/0,-3/", true),
             PLL("Opp", "/3,3/1,0/-2,-2/2,0/2,2/0,-2/-1,-1/0,3/-3,-3/0,2/-2,-2/-1,0", true),
             PLL("Oa", "/3,3/1,0/-2,-2/-2,0/2,2/-1,0/-3,-3/1,0/2,2/0,1", true),
@@ -63,12 +62,12 @@ object SequenciasTemplates {
             PLL("Db", "/0,3/0,3/0,-1/0,2/0,-2/4,0/-2,0/0,2/-2,-1/3,-3/0,-3/", true),
             PLL("Pa", "/-3,0/3,-3/3,0/-1,0/0,2/-2,0/4,0/0,-2/0,2/-4,1/3,0/", true),
             PLL("Pb", "/-3,0/4,-1/0,-2/0,2/-4,0/2,0/0,-2/1,0/-3,0/-3,3/3,0/", true)
-    ))
+    )
 
     /**
      * Algoritmos auxiliares (de preferência os mais curtos)
      */
-    val AUX_ALGS = ArrayList(Arrays.asList(
+    val AUX_ALGS = arrayListOf(
             AuxAlg("nothing", "/0,0/0,0"),
             AuxAlg("opp/opp1", "/0,0/1,0/5,-1/-5,1/-1,0"),
             AuxAlg("opp/opp2", "/0,0/1,3/5,-1/-5,1/-1,0"),
@@ -883,7 +882,7 @@ object SequenciasTemplates {
             AuxAlg("Pb/Sb14", "/0,0/6,-4/0,-3/0,3/1,-2/-1,2/0,1"),
             AuxAlg("Pb/Sb15", "/0,0/6,2/0,-3/0,3/1,-2/-1,2/0,1"),
             AuxAlg("Pb/Sb16", "/0,0/6,5/0,-3/0,3/1,-2/-1,2/0,1")
-    ))
+    )
 
     fun getPllByName(name: String): PLL? {
         for (x in SequenciasTemplates.PLLs_PADRAO) {
