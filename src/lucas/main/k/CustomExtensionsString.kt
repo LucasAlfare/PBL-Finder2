@@ -3,13 +3,13 @@ package lucas.main.k
 import java.util.*
 import kotlin.collections.ArrayList
 
-fun String.sequenciaEmBaixo(): String {
+fun String.emBaixo(): String {
     val prefix = if (startsWith("/")) "/6,6/-1,1" else "/6,6/-1,1/0,0/"
     val sufix = if (!endsWith("/")) "/6,6/-1,1" else "1,-1/6,6/"
     return prefix + this + sufix
 }
 
-fun String.sequenciaReversa(): String {
+fun String.aoContrario(): String {
     this.replace(")", "")
     this.replace("(", "")
     this.replace(" ", "")
@@ -30,50 +30,59 @@ fun String.sequenciaReversa(): String {
     return r
 }
 
-fun sequenciaOtimizada(old: String): String {
+fun String.otimizada(): String {
+    val old = this
     val aux = arrayListOf<String>()
     aux.addAll(old.replace(" ", "").replace("[", "").replace("]", "").split("/"))
-    //remove os itens vazios..
     aux.removeAll(Collections.singletonList(""))
 
     val indice00 = aux.indexOf("0,0")
 
-    if (indice00 != -1) {
-        if (indice00 >= 1 && indice00 < aux.size - 1) { //pelo meio...
+    if (indice00 != -1){
+        if (indice00 >= 1 && indice00 < aux.size - 1){
+            val anterior = aux[indice00 - 1].split(",")
+            val seguinte = aux[indice00 + 1].split(",")
 
-            val pAnterior = aux[indice00 - 1].split(",")
-            val pSeguinte = aux[indice00 + 1].split(",")
-
-            //remove os pares velhos
             aux.removeAt(indice00 - 1)
             aux.removeAt(indice00)
             aux.removeAt(indice00 - 1)
 
-            val sumA = Integer.parseInt(pAnterior[0]) + Integer.parseInt(pSeguinte[0])
-            val sumB = Integer.parseInt(pAnterior[1]) + Integer.parseInt(pSeguinte[1])
+            val a = anterior[0].toInt() + seguinte[0].toInt()
+            val b = anterior[1].toInt() + seguinte[1].toInt()
 
-            val x = if (sumA > 6) (12 - sumA) * -1 else if (sumA < 0) if (sumA < -6) 12 - sumA else sumA else sumA
-            val y = if (sumB > 6) (12 - sumB) * -1 else if (sumB < 0) if (sumB < -6) 12 - sumB else sumB else sumB
+            val x = if (a > 6) (12 - a) * -1 else if (a < 0) if (a < -6) 12 - a else a else a
+            val y = if (b > 6) (12 - b) * -1 else if (b < 0) if (b < -6) 12 - b else b else b
 
             //a+c,b+d
-            aux.add(indice00 - 1, x.toString() + "," + y)
-            return sequenciaOtimizada(strListToSequence(aux, old)).replace("[", "").replace("]", "")
-        } else if (indice00 == 0) { //no começo..
+            aux.add(indice00 - 1, "$x,$y")
+            return listaToSequencia(aux, old).otimizada()
+        } else if (indice00 == 0){
             aux.removeAt(0)
-            return sequenciaOtimizada(strListToSequence(aux, old.replaceFirst("/".toRegex(), "")))
-        } else { //no fim...
+            return listaToSequencia(aux, old.replaceFirst("/", "")).otimizada()
+        } else {
             aux.removeAt(aux.size - 1)
-            return sequenciaOtimizada(strListToSequence(aux, old))
+            return listaToSequencia(aux, old).otimizada()
         }
     } else {
-        return strListToSequence(aux, old).replace("[", "").replace("]", "")
+        return listaToSequencia(aux, old)
     }
 }
 
-private fun strListToSequence(lista: ArrayList<String>, original: String): String{
-    var r = lista.toString().replace(", ", "/").replace("(", "").replace(")", "").replace(" ", "")
+private fun listaToSequencia(strings: java.util.ArrayList<String>, original: String): String {
+    val hold = java.util.ArrayList<String>()
 
-    if (original.startsWith("/")) r = "/" + r
+    for (x in strings) {
+        val aux2 = x.split(",".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+        if (x != "") {
+            hold.add(Integer.parseInt(aux2[0]).toString() + "," + Integer.parseInt(aux2[1]))
+        }
+    }
+
+    //cleans toString list
+    var r = hold.toString().replace(", ".toRegex(), "/").replace("\\[".toRegex(), "").replace("]".toRegex(), "").replace(" ".toRegex(), "")
+
+    //re-adds twists
+    if (original.startsWith("/")) r = "/$r"
     if (original.endsWith("/") || original.endsWith("/0,0")) r += "/"
 
     return r

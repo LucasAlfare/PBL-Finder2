@@ -14,13 +14,13 @@ class Buscador(val pbl: PBL) {
 
         log = "Targeted PBL: ${pbl.nome}\n"
 
-        val s1 = otimizedSequence(reversedSequence(pbl.topo.seq))
-        val s2 = otimizedSequence(reversedSequence(pbl.base.seq.sequenciaEmBaixo()))
+        val s1 = pbl.topo.seq.aoContrario().otimizada()
+        val s2 = pbl.base.seq.aoContrario().emBaixo().otimizada()
 
         square.aplicarSequencia(s1)
         square.aplicarSequencia(s2)
 
-        log += "Setup to targeted PBL: ($s1) and ($s2)"
+        log += "Setup to get the targeted PBL:\n($s1) and ($s2)\n"
         println(log)
 
         for (a in SequenciasTemplates.AUX_ALGS){
@@ -29,10 +29,10 @@ class Buscador(val pbl: PBL) {
                 square.aplicarSequencia(sequenciaDeTeste)
 
                 if (isResolvido(square)){
-                    buscas.add(Resultado(pbl, otimizedSequence(sequenciaDeTeste), arrayListOf(a, b)))
-                    square.aplicarSequencia(reversedSequence(sequenciaDeTeste))
+                    buscas.add(Resultado(pbl, sequenciaDeTeste.otimizada(), arrayListOf(a, b)))
+                    square.aplicarSequencia(sequenciaDeTeste.aoContrario())
                 } else {
-                    square.aplicarSequencia(reversedSequence(sequenciaDeTeste))
+                    square.aplicarSequencia(sequenciaDeTeste.aoContrario())
                 }
             }
         }

@@ -41,8 +41,7 @@ public class CustomStringUtils {
                 aux.add(indexOfZeros - 1, x + "," + y);
 
                 return otimizedSequence(strListToSequence(aux, old));
-            }
-            else if (indexOfZeros == 0){ //no começo..
+            } else if (indexOfZeros == 0){ //no começo..
                 aux.remove(0);
                 return otimizedSequence(strListToSequence(aux, old.replaceFirst("/", "")));
             } else { //no fim...
