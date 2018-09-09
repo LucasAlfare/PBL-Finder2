@@ -1,7 +1,6 @@
 package lucas.main.k
 
 import java.util.*
-import kotlin.collections.ArrayList
 
 fun String.emBaixo(): String {
     val prefix = if (startsWith("/")) "/6,6/-1,1" else "/6,6/-1,1/0,0/"

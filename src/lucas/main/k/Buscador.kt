@@ -2,7 +2,6 @@ package lucas.main.k
 
 import lucas.main.j.Cubo
 import java.util.*
-import lucas.main.j.CustomStringUtils.*
 
 class Buscador(val pbl: PBL) {
 
@@ -27,20 +26,17 @@ class Buscador(val pbl: PBL) {
             for (b in SequenciasTemplates.AUX_ALGS) {
                 val sequenciaDeTeste = a.seq + b.seq
                 square.aplicarSequencia(sequenciaDeTeste)
-
-                if (isResolvido(square)){
+                if (squareResolvido(square)) {
                     buscas.add(Resultado(pbl, sequenciaDeTeste.otimizada(), arrayListOf(a, b)))
-                    square.aplicarSequencia(sequenciaDeTeste.aoContrario())
-                } else {
-                    square.aplicarSequencia(sequenciaDeTeste.aoContrario())
                 }
+                square.aplicarSequencia(sequenciaDeTeste.aoContrario())
             }
         }
 
         println(buscas)
     }
 
-    fun isResolvido(teste: Cubo): Boolean {
+    fun squareResolvido(teste: Cubo): Boolean {
         val resolvido = Cubo()
         val bytesTopo = arrayListOf<Byte>()
         bytesTopo.addAll(resolvido.getPieces(true))
