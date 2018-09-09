@@ -1,14 +1,11 @@
 package lucas.main.k
 
-import java.util.Arrays
-import java.util.ArrayList
-
 
 /**
  * Esse objeto guarda algoritmos em forma de String para serem usados nas mais
  * diversas operações.
  */
-object SequenciasTemplates {
+object Seqs {
 
     /**
      * PLLs padrão
@@ -885,13 +882,13 @@ object SequenciasTemplates {
     )
 
     fun getPllByName(name: String): PLL? {
-        for (x in SequenciasTemplates.PLLs_PADRAO) {
+        for (x in Seqs.PLLs_PADRAO) {
             if (x.nome.equals(name)) {
                 return x
             }
         }
 
-        for (x in SequenciasTemplates.PLLs_PARIDADE) {
+        for (x in Seqs.PLLs_PARIDADE) {
             if (x.nome.equals(name)) {
                 return x
             }
@@ -902,12 +899,12 @@ object SequenciasTemplates {
 
     fun removeAuxAlgByName(name: String) {
         var indexToRemove = 0
-        for (i in SequenciasTemplates.AUX_ALGS.indices) {
-            if (SequenciasTemplates.AUX_ALGS[i].nome.equals(name)) {
+        for (i in Seqs.AUX_ALGS.indices) {
+            if (Seqs.AUX_ALGS[i].nome.equals(name)) {
                 indexToRemove = i
             }
         }
 
-        SequenciasTemplates.AUX_ALGS.removeAt(indexToRemove)
+        Seqs.AUX_ALGS.removeAt(indexToRemove)
     }
 }

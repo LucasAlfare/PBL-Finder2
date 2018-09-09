@@ -1,67 +1,46 @@
 package lucas.main.j;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.util.ArrayList;
-import java.util.Random;
 
-public class Cubo implements Comparable<Cubo> {
-    static Random r = new Random();
-    int ul = 0x011233;
-    int ur = 0x455677;
-    int dl = 0x998bba;
-    int dr = 0xddcffe;
-    int ml = 0;
-    int[] arr = new int[16];
+/**
+ * ORIGINALLY WRITTEN BY CS
+ */
+public class Cubo {
 
-    Cubo(String s) {
-        //TODO
-    }
+    private int ul = 0x011233;
+    private int ur = 0x455677;
+    private int dl = 0x998bba;
+    private int dr = 0xddcffe;
+    private int ml = 0;
 
     public Cubo() {
-
+        //pass
     }
 
-    @Override
-    public int compareTo(@NotNull Cubo f) {
-        if (ul != f.ul) {
-            return ul - f.ul;
-        }
-        if (ur != f.ur) {
-            return ur - f.ur;
-        }
-        if (dl != f.dl) {
-            return dl - f.dl;
-        }
-        if (dr != f.dr) {
-            return dr - f.dr;
-        }
-        return ml - f.ml;
-    }
-
-    void copy(Cubo c) {
-        this.ul = c.ul;
-        this.ur = c.ur;
-        this.dl = c.dl;
-        this.dr = c.dr;
-        this.ml = c.ml;
-    }
-
+    /**
+     * Aplica uma sequencia neste cubo. A sequencia pode ser nos seguintes formatos:
+     * / (x, y) /
+     * /(x, y)/
+     * /x, y/
+     * /x,y/
+     *
+     * @param sequencia sequencia a ser aplicada neste cubo.
+     */
     public void aplicarSequencia(String sequencia){
         String[] pares = sequencia.replaceAll(" ", "").replaceAll("\\(", "").replaceAll("\\)", "").split("/");
 
-        if (sequencia.startsWith("/")) twist();
+        if (sequencia.startsWith("/")) barra();
 
         for (String par : pares){
             if (!par.equals("")){
                 String[] movimentosPar = par.split(",");
                 mover(true, Integer.parseInt(movimentosPar[0]));
                 mover(false, Integer.parseInt(movimentosPar[1]));
-                twist();
+                barra();
             }
         }
 
-        if (!sequencia.endsWith("/")) twist();
+        if (!sequencia.endsWith("/")) barra();
     }
 
     /**
@@ -74,26 +53,26 @@ public class Cubo implements Comparable<Cubo> {
      * @param face The face you want to mover.
      * @param movimento the value of the mover you want to do.
      */
-    public void mover(boolean face, int movimento) {
+    private void mover(boolean face, int movimento) {
         this.doMove(face ? (movimento > 0 ? movimento : 12 - (movimento * -1)) : (movimento > 0 ? movimento : 12 - (movimento * -1)) * -1);
     }
 
     /**
-     * Applies a twist (slash "/") to current cube.
+     * Applies a barra (slash "/") to current cube.
      */
-    public void twist() {
+    private void barra() {
         if (this.isTwistable()) {
             this.doMove(0);
         }
     }
 
     /**
-     * @param move 0 = twist
+     * @param move 0 = barra
      *             [1, 11] = top mover
      *             [-1, -11] = bottom mover
      *             for example, 6 == (6, 0), 9 == (-3, 0), -4 == (0, 4)
      */
-    void doMove(int move) {
+    private void doMove(int move) {
         move <<= 2;
         if (move > 24) {
             move = 48 - move;
@@ -114,7 +93,7 @@ public class Cubo implements Comparable<Cubo> {
             int temp = dl;
             dl = (dl << move | dr >> (24 - move)) & 0xffffff;
             dr = (dr << move | temp >> (24 - move)) & 0xffffff;
-        } else if (move < -24) {
+        } else {
             move = 48 + move;
             int temp = dl;
             dl = (dl >> move | dr << (24 - move)) & 0xffffff;
@@ -122,7 +101,7 @@ public class Cubo implements Comparable<Cubo> {
         }
     }
 
-    public byte pieceAt(int idx) {
+    private byte pieceAt(int idx) {
         int ret;
         if (idx < 6) {
             ret = ul >> ((5 - idx) << 2);
@@ -136,44 +115,7 @@ public class Cubo implements Comparable<Cubo> {
         return (byte) (ret & 0x0f);
     }
 
-    public void setPiece(int idx, int value) {
-        if (idx < 6) {
-            ul &= ~(0xf << ((5 - idx) << 2));
-            ul |= value << ((5 - idx) << 2);
-        } else if (idx < 12) {
-            ur &= ~(0xf << ((11 - idx) << 2));
-            ur |= value << ((11 - idx) << 2);
-        } else if (idx < 18) {
-            dl &= ~(0xf << ((17 - idx) << 2));
-            dl |= value << ((17 - idx) << 2);
-        } else if (idx < 24) {
-            dr &= ~(0xf << ((23 - idx) << 2));
-            dr |= value << ((23 - idx) << 2);
-        } else {
-            ml = value;
-        }
-    }
-
-    int getParity() {
-        int cnt = 0;
-        arr[0] = pieceAt(0);
-        for (int i = 1; i < 24; i++) {
-            if (pieceAt(i) != arr[cnt]) {
-                arr[++cnt] = pieceAt(i);
-            }
-        }
-        int p = 0;
-        for (int a = 0; a < 16; a++) {
-            for (int b = a + 1; b < 16; b++) {
-                if (arr[a] > arr[b]) {
-                    p ^= 1;
-                }
-            }
-        }
-        return p;
-    }
-
-    boolean isTwistable() {
+    private boolean isTwistable() {
         return pieceAt(0) != pieceAt(11)
                 && pieceAt(5) != pieceAt(6)
                 && pieceAt(12) != pieceAt(23)
@@ -200,7 +142,7 @@ public class Cubo implements Comparable<Cubo> {
      * @param face the face you want to see binary representation.
      * @return a binary representation of a square-1 face.
      */
-    public String binString(boolean face) {
+    private String binString(boolean face) {
         String r = "";
 
         r += pieceAt(face ? 0 : 17) % 2 == 0 ? 0 : 1;
@@ -219,8 +161,16 @@ public class Cubo implements Comparable<Cubo> {
         return r;
     }
 
-    public String fullBin(){
+    private String fullBin(){
         return binString(true).concat(binString(false));
+    }
+
+    private void copy(Cubo c) {
+        this.ul = c.ul;
+        this.ur = c.ur;
+        this.dl = c.dl;
+        this.dr = c.dr;
+        this.ml = c.ml;
     }
 
     @Override

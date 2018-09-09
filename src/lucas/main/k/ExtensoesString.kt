@@ -2,12 +2,22 @@ package lucas.main.k
 
 import java.util.*
 
+/**
+ * Este método retorna a String em questão formatada para
+ * ser aplicada na base do cubo
+ */
 fun String.emBaixo(): String {
     val prefix = if (startsWith("/")) "/6,6/-1,1" else "/6,6/-1,1/0,0/"
     val sufix = if (!endsWith("/")) "/6,6/-1,1" else "1,-1/6,6/"
     return prefix + this + sufix
 }
 
+/**
+ * Este método inverte uma sequencia de square-1.
+ *
+ * Exemplo:
+ * /(a, b)/(-c, d) -> (c, -d)/(-a, -b)/
+ */
 fun String.aoContrario(): String {
     this.replace(")", "")
     this.replace("(", "")
@@ -29,6 +39,11 @@ fun String.aoContrario(): String {
     return r
 }
 
+/**
+ * Este método formata uma sequencia removendo os pares
+ * (0,0) e justando os pares anterior e seguintes ao 0,0,
+ * usando recursão.
+ */
 fun String.otimizada(): String {
     val old = this
     val aux = arrayListOf<String>()
@@ -67,6 +82,9 @@ fun String.otimizada(): String {
     }
 }
 
+/**
+ * Apenas auxiliar...
+ */
 private fun listaToSequencia(strings: java.util.ArrayList<String>, original: String): String {
     val hold = java.util.ArrayList<String>()
 
