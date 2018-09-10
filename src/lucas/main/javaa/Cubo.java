@@ -1,4 +1,4 @@
-package lucas.main.j;
+package lucas.main.javaa;
 
 import java.util.ArrayList;
 

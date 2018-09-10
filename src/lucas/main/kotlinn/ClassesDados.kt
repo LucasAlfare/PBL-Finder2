@@ -2,7 +2,7 @@
  * ESTE ARQUIVO CONTÉM AS CLASSES QUE IRÃO
  * MANTER DADOS PARA O PROGRAMA
  */
-package lucas.main.k
+package lucas.main.kotlinn
 
 
 data class PLL(val nome: String, val seq: String, val isParidade: Boolean)

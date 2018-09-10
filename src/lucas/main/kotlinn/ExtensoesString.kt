@@ -1,4 +1,4 @@
-package lucas.main.k
+package lucas.main.kotlinn
 
 import java.util.*
 

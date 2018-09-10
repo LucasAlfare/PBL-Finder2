@@ -1,6 +1,6 @@
-package lucas.main.k
+package lucas.main.kotlinn
 
-import lucas.main.j.Cubo
+import lucas.main.javaa.Cubo
 import java.util.*
 
 /**
