@@ -7,9 +7,9 @@ import java.util.*
  * ser aplicada na base do cubo
  */
 fun String.emBaixo(): String {
-    val prefix = if (startsWith("/")) "/6,6/-1,1" else "/6,6/-1,1/0,0/"
-    val sufix = if (!endsWith("/")) "/6,6/-1,1" else "1,-1/6,6/"
-    return prefix + this + sufix
+    val prefixo = if (startsWith("/")) "/6,6/-1,1" else "/6,6/-1,1/0,0/"
+    val sufixo = if (!endsWith("/")) "/6,6/-1,1" else "1,-1/6,6/"
+    return prefixo + this + sufixo
 }
 
 /**
