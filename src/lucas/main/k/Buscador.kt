@@ -16,6 +16,7 @@ class Buscador(val pbl: PBL) {
 
     val buscas = arrayListOf<Resultado>()
     var log = ""
+    var procurando = false
 
     /**
      * método que busca por todas as sequencias que resolvem
@@ -35,18 +36,26 @@ class Buscador(val pbl: PBL) {
         log += "Setup to get the targeted PBL:\n($s1) and ($s2)\n"
         println(log)
 
-        for (a in Seqs.AUX_ALGS){
-            for (b in Seqs.AUX_ALGS) {
-                val sequenciaDeTeste = a.seq + b.seq
-                square.aplicarSequencia(sequenciaDeTeste)
-                if (square.isResolvido()) {
-                    buscas.add(Resultado(pbl, sequenciaDeTeste.otimizada(), arrayListOf(a, b)))
-                }
-                square.aplicarSequencia(sequenciaDeTeste.aoContrario())
-            }
-        }
+        val t = Thread(Runnable {
+            for (a in Seqs.AUX_ALGS){
+                for (b in Seqs.AUX_ALGS) {
+                    procurando = true
+                    val sequenciaDeTeste = a.seq + b.seq
+                    square.aplicarSequencia(sequenciaDeTeste)
 
-        println(buscas)
+                    if (square.isResolvido()) {
+                        buscas.add(Resultado(pbl, sequenciaDeTeste.otimizada(), arrayListOf(a, b)))
+                    }
+
+                    square.aplicarSequencia(sequenciaDeTeste.aoContrario())
+                }
+            }
+            procurando = false
+
+            println(buscas)
+        })
+
+        t.start()
     }
 
     /**
