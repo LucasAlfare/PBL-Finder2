@@ -50,6 +50,7 @@ class Buscador(val pbl: PBL) {
                     square.aplicarSequencia(sequenciaDeTeste.aoContrario())
                 }
             }
+
             procurando = false
 
             println(buscas)
